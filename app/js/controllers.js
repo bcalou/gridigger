@@ -3,9 +3,7 @@
 /* Controllers */
 
 angular.module('myApp.controllers', [])
-  .controller('MyCtrl1', ['$scope', function($scope) {
+  .controller('MainCtrl', ['$scope', function($scope) {
 
   }])
-  .controller('MyCtrl2', ['$scope', function($scope) {
-
-  }]);
+;
