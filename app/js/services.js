@@ -1,4 +1,4 @@
 'use strict';
 
 /* Services */
-angular.module('myApp.services', []);
+angular.module('gridigger.services', []);

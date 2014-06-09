@@ -2,14 +2,13 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('myApp', [
+angular.module('gridigger', [
   'ngRoute',
-  'myApp.filters',
-  'myApp.services',
-  'myApp.directives',
-  'myApp.controllers'
+  'gridigger.filters',
+  'gridigger.services',
+  'gridigger.directives',
+  'gridigger.controllers',
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view1', {templateUrl: 'partials/main.html', controller: 'MainCtrl'});
-  $routeProvider.otherwise({redirectTo: '/view1'});
+  $routeProvider.when('/', {templateUrl: 'partials/main.html', controller: 'GridCtrl'});
 }]);

@@ -2,8 +2,17 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', [])
-  .controller('MainCtrl', ['$scope', function($scope) {
+angular.module('gridigger.controllers', [])
+
+  .controller('GridCtrl', ['$scope', function($scope) {
+
+    $scope.getList = function(length) {
+      var result = [];
+        for (var i = 1; i <= length; i++) {
+          result.push(i);
+        }
+        return result;
+    }
 
   }])
 ;
