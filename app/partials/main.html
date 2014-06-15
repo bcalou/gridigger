@@ -1,3 +1,6 @@
+<save-grid>Save grid</save-grid>
+<load-grid>Load grid</load-grid>
+
 <p>Lines : <input ng-model="linesNb" size="1" maxlength="2"/></p>
 <p>Columns : <input ng-model="columnsNb" size="1" maxlength="2"/></p>
 
@@ -5,7 +8,7 @@
   <table id="grid">
     <tr ng-repeat="line in getList(linesNb)">
       <td ng-repeat="column in getList(columnsNb)">
-        <grid-input>
+        <grid-input></grid-input>
       </td>
     </tr>
   </table>

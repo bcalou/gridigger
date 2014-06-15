@@ -15,9 +15,25 @@ describe('directives', function() {
 
     describe('gridInput', function() {
       it('should generate an input', function() {
-          var element = $compile("<grid-input>")($rootScope);
-          $rootScope.$digest();
-          expect(element[0].value).toBeDefined();
+        var element = $compile("<grid-input>")($rootScope);
+        $rootScope.$digest();
+        expect(element[0].value).toEqual('');
+      });
+    });
+
+    describe('saveButton', function() {
+      it('should generate a save button', function() {
+        var element = $compile("<save-grid>")($rootScope);
+        $rootScope.$digest();
+        expect(element[0].id).toEqual('save-grid');
+      });
+    });
+
+    describe('loadButton', function() {
+      it('should generate a load button', function() {
+        var element = $compile("<load-grid>")($rootScope);
+        $rootScope.$digest();
+        expect(element[0].id).toEqual('load-grid');
       });
     });
 

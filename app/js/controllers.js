@@ -11,10 +11,10 @@ angular.module('gridigger.controllers', [])
 
     $scope.getList = function(length) {
       var result = [];
-        for (var i = 1; i <= length; i++) {
-          result.push(i);
-        }
-        return result;
+      for (var i = 1; i <= length; i++) {
+        result.push(i);
+      }
+      return result;
     }
 
   }])
