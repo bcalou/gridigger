@@ -1,7 +1,7 @@
 <p>Lines : <input ng-model="linesNb" size="1" /></p>
 <p>Columns : <input ng-model="columnsNb" size="1" /></p>
 
-<div ng-if="linesNb>0 && columnsNb>0">
+<div>
   <table id="grid">
     <tr ng-repeat="line in getList(linesNb)">
       <td ng-repeat="column in getList(columnsNb)">

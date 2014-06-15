@@ -6,9 +6,19 @@ describe('GridCtrl', function(){
 
   beforeEach(module('gridigger'));
 
+  it('should have a default value for linesNb and ColumnsNb', inject(function($controller) {
+
+    var scope = {},
+        ctrl = $controller('GridCtrl', {$scope:scope});
+
+    // Verify default value of linesNb and ColumnsNb
+    expect(scope.linesNb).toBe(10);
+    expect(scope.columnsNb).toBe(10);
+
+  }));
+
   it('should return a list of three items when getList is called with 3', inject(function($controller) {
 
-    // Setting controller
     var scope = {},
         ctrl = $controller('GridCtrl', {$scope:scope});
 
