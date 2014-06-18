@@ -17,9 +17,14 @@ var mainPage = function() {
 
   this.saveGridButton = element(by.css("#save-grid"));
   this.loadGridButton = element(by.css("#load-grid"));
+  this.emptyGridButton = element(by.css("#empty-grid"));
 
   this.getCell = function(line, column) {
     return element(by.css('#grid tr:nth-child(' + line + ') td:nth-child(' + column + ') input'));
+  }
+
+  this.getCellValue = function(line, column) {
+    return this.getCell(line, column).getAttribute('value');
   }
 
   this.setLinesNumber = function(linesNb) {
@@ -35,6 +40,11 @@ var mainPage = function() {
   this.resetDimensions = function() {
     this.setLinesNumber(this.defaultLinesNb);
     this.setColumnsNumber(this.defaultColumnsNb);
+  }
+
+  this.resetGrid = function() {
+    this.resetDimensions();
+    this.emptyGridButton.click();
   }
 
 };

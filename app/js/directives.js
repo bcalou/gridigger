@@ -75,4 +75,20 @@ angular.module('gridigger.directives', [])
     }
   })
 
+  .directive('emptyGrid', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      transclude: true,
+      template: '<button ng-transclude id="empty-grid"></button>',
+      link: function(scope, element) {
+
+        // Empty all inputs on click
+        $(element).click(function() {
+          $('#grid input').val("");
+        });
+      }
+    }
+  })
+
 ;

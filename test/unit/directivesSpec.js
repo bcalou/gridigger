@@ -21,19 +21,27 @@ describe('directives', function() {
       });
     });
 
-    describe('saveButton', function() {
-      it('should generate a save button', function() {
+    describe('saveGridButton', function() {
+      it('should generate a save grid button', function() {
         var element = $compile("<save-grid>")($rootScope);
         $rootScope.$digest();
         expect(element[0].id).toEqual('save-grid');
       });
     });
 
-    describe('loadButton', function() {
-      it('should generate a load button', function() {
+    describe('loadGridButton', function() {
+      it('should generate a load grid button', function() {
         var element = $compile("<load-grid>")($rootScope);
         $rootScope.$digest();
         expect(element[0].id).toEqual('load-grid');
+      });
+    });
+
+    describe('emptyGridButton', function() {
+      it('should generate a empty grid button', function() {
+        var element = $compile("<empty-grid>")($rootScope);
+        $rootScope.$digest();
+        expect(element[0].id).toEqual('empty-grid');
       });
     });
 
