@@ -58,8 +58,8 @@ angular.module('gridigger.directives', [])
       template: '<button ng-transclude id="load-grid"></button>',
       link: function(scope, element) {
 
-        // Load grid from local storage on click
-        $(element).click(function() {
+        // Load data to grid from local storage
+        scope.loadData = function() {
           scope.linesNb = localStorage.linesNb;
           scope.columnsNb = localStorage.columnNb;
           scope.$apply();
@@ -70,7 +70,19 @@ angular.module('gridigger.directives', [])
               $(this).val(data.charAt(index));
             }
           });
+        }
+
+        // Load on click
+        $(element).click(function() {
+          scope.loadData();
         });
+
+        // Load at start
+        if(localStorage.gridData.length > 0) {
+          setTimeout(function() {
+            scope.loadData();
+          }, 100);
+        }
       }
     }
   })

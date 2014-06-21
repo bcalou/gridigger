@@ -10,12 +10,18 @@ describe('gridigger', function() {
 
   it('should show a specific number of cells at the beginning', function() {
 
+    // Setup
+    mainPage.resetGrid();
+
     // Verify there are 100 cells
     expect(mainPage.cells.count()).toBe(100);
 
   });
 
   it('should change the number of cells when changing linesNb and columnsNb', function() {
+
+    // Setup
+    mainPage.resetGrid();
 
     // Set linesNb and columnsNb
     mainPage.setLinesNumber('4');
@@ -30,6 +36,9 @@ describe('gridigger', function() {
   });
 
   it('should focus on next input when typing into an input', function() {
+
+    // Setup
+    mainPage.resetGrid();
 
     // Type into the first input (first line, penultimate column)
     mainPage.getCell(1, 9).sendKeys('A');
@@ -49,6 +58,9 @@ describe('gridigger', function() {
   });
 
   it('should save the grid dimensions and data and load them on next visit', function() {
+
+    // Setup
+    mainPage.resetGrid();
 
     // Set linesNb and columnsNb
     mainPage.setLinesNumber('4');
@@ -82,7 +94,42 @@ describe('gridigger', function() {
 
   });
 
+  it('should automatically load the local storage data when arriving on the page', function() {
+
+    // Setup
+    mainPage.resetGrid();
+
+    // Set linesNb and columnsNb
+    mainPage.setLinesNumber('5');
+    mainPage.setColumnsNumber('4');
+
+    // Set some data in first cells
+    mainPage.getCell(2, 1).sendKeys('A');
+    mainPage.getCell(1, 3).sendKeys('B');
+    mainPage.getCell(2, 3).sendKeys('C');
+
+    // Save the grid
+    mainPage.saveGridButton.click();
+
+    // Reload page
+    browser.get('index.html');
+
+    // The dimensions and data should be loaded
+    expect(mainPage.linesNbInput.getAttribute('value')).toBe('5');
+    expect(mainPage.columnsNbInput.getAttribute('value')).toBe('4');
+    expect(mainPage.getCellValue(2, 1)).toBe('A');
+    expect(mainPage.getCellValue(1, 3)).toBe('B');
+    expect(mainPage.getCellValue(2, 3)).toBe('C');
+
+    // Reset state
+    mainPage.resetGrid();
+
+  })
+
   it('should empty the grid when clicking on empty grid button', function() {
+
+    // Setup
+    mainPage.resetGrid();
 
     // Setting some data
     mainPage.getCell(1, 1).sendKeys('A');
