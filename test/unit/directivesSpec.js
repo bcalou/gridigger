@@ -45,9 +45,17 @@ describe('directives', function() {
       });
     });
 
-    describe('gridSearchField', function() {
-      it('should generate a grid search field', function() {
-        var element = $compile("<grid-search>")($rootScope);
+    describe('stringSearchField', function() {
+      it('should generate a string search field', function() {
+        var element = $compile("<string-search>")($rootScope);
+        $rootScope.$digest();
+        expect(element[0].value).toEqual('');
+      });
+    });
+
+    describe('inlineSearchField', function() {
+      it('should generate a inline search field', function() {
+        var element = $compile("<inline-search>")($rootScope);
         $rootScope.$digest();
         expect(element[0].value).toEqual('');
       });

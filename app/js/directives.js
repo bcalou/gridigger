@@ -103,12 +103,12 @@ angular.module('gridigger.directives', [])
     }
   })
 
-  .directive('gridSearch', function() {
+  .directive('stringSearch', function() {
     return {
       restrict: 'E',
       replace: true,
       transclude: false,
-      template: '<input class="grid-search" maxlength="15"/>',
+      template: '<input class="string-search search" maxlength="15"/>',
       link: function(scope, element) {
 
         // Get 8 inputs around given input
@@ -179,6 +179,102 @@ angular.module('gridigger.directives', [])
                 }
               }
             });
+          }
+        });
+      }
+    }
+  })
+
+  .directive('inlineSearch', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      transclude: true,
+      template: '<input class="inline-search search" maxlength="15"/>',
+      link: function(scope, element) {
+
+        scope.selectionContainsValues = function(search, selection) {
+          var valid = true;
+          for(var i = 0; i < search.length; i++) {
+            if(!scope.valueIsInSelection(search[i], selection)) {
+              valid = false;
+            }
+          }
+          return valid;
+        }
+
+        scope.valueIsInSelection = function(value, selection) {
+          var found = false;
+          for(var i = 0; i < selection.length; i++) {
+            if($(selection[i]).val().toUpperCase() == value) {
+              var found = true;
+            }
+          }
+          return found;
+        }
+
+        scope.getCell = function(line, column) {
+          return $('#grid tr:nth-child(' + line + ') td:nth-child(' + column + ') input');
+        }
+
+        scope.highlightResults = function(input, selection) {
+          if(scope.selectionContainsValues(input, selection)) {
+            for(var i = 0; i < selection.length; i++) {
+              $(selection[i]).addClass('active');
+            }
+          }
+        }
+
+        // When searching something
+        $(element).on('input', function() {
+          $('#grid input').attr('class', '');
+          var input = $(element).val().toUpperCase();
+          if(input.length > 0) {
+            // Search lines
+            for(var line = 0; line < scope.linesNb; line++) {
+              var lineInputs = $('#grid tr:eq(' + line + ') input');
+              scope.highlightResults(input, lineInputs);
+            }
+            // Search columns
+            for(var column = 0; column < scope.columnsNb; column++) {
+              var columnInputs = $('#grid td:nth-child(' + parseInt(column + 1) + ') input');
+              scope.highlightResults(input, columnInputs);
+            }
+            // Search diagonals from top left to bottom right
+            // North east part
+            for(var column = 1; column <= scope.columnsNb; column++) {
+              var diagonalInputs = [];
+              for(var line = 1; line <= parseInt(scope.linesNb - column + 1); line++) {
+                diagonalInputs.push(scope.getCell(line, parseInt(line + column - 1)));
+              }
+              scope.highlightResults(input, diagonalInputs);
+            }
+            // South west part
+            for(var line = 2; line <= scope.linesNb; line++) {
+              var diagonalInputs = [];
+              for(var column = 1; column <= parseInt(scope.columnsNb - line + 1); column++) {
+                diagonalInputs.push(scope.getCell(parseInt(column + line - 1), column));
+              }
+              scope.highlightResults(input, diagonalInputs);
+            }
+            // Search diagonals from bottom left to top right
+            // North west part
+            for(var line = 1; line <= scope.linesNb; line++) {
+              var diagonalInputs = [];
+              for(var column = line; column >= 1; column--) {
+                diagonalInputs.push(scope.getCell(column, parseInt(line + 1 - column)));
+              }
+              scope.highlightResults(input, diagonalInputs);
+            }
+            // Second part
+            // South East part
+            for(var column = 2; column <= scope.columnsNb; column++) {
+              var diagonalInputs = [];
+              for(var line = column; line <= scope.linesNb; line++) {
+                diagonalInputs.push(scope.getCell(line, parseInt(column + parseInt(scope.columnsNb - line))));
+              }
+              scope.highlightResults(input, diagonalInputs);
+            }
           }
         });
       }

@@ -127,7 +127,7 @@ describe('gridigger', function() {
     mainPage.loadAlphabetGrid();
 
     // Search string
-    mainPage.searchFor('AGHNRNO');
+    mainPage.stringSearchInput.sendKeys('AGHNRNO');
 
     // Verify the string was found
     expect(element(by.css('.rank-0')).getAttribute('value')).toBe('A');
@@ -137,6 +137,26 @@ describe('gridigger', function() {
     expect(element(by.css('.rank-4')).getAttribute('value')).toBe('R');
     expect(element(by.css('.rank-5')).getAttribute('value')).toBe('N');
     expect(element(by.css('.rank-6')).getAttribute('value')).toBe('O');
+
+  })
+
+  it('should find and highligth a line, column or diagonal containing specific values with redundance', function() {
+
+    // Setup
+    mainPage.loadAlphabetGrid();
+
+    // Search lines, columns and diagonals
+    mainPage.inlineSearchInput.sendKeys('A');
+
+    // This search should return 13 results
+    expect(element.all(by.css('.active')).count()).toBe(13);
+
+    // More complex search
+    mainPage.inlineSearchInput.sendKeys('AGN');
+
+    // This search should return 5 results
+    expect(element.all(by.css('.active')).count()).toBe(5);
+
   })
 
 });

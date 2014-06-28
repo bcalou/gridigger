@@ -19,7 +19,8 @@ var mainPage = function() {
   this.loadGridButton = element(by.css("#load-grid"));
   this.emptyGridButton = element(by.css("#empty-grid"));
 
-  this.search = element(by.css('.grid-search'));
+  this.stringSearchInput = element(by.css('.string-search'));
+  this.inlineSearchInput = element(by.css('.inline-search'));
 
   this.getCell = function(line, column) {
     return element(by.css('#grid tr:nth-child(' + line + ') td:nth-child(' + column + ') input'));
@@ -58,10 +59,6 @@ var mainPage = function() {
         this.getCell(line, column).sendKeys(alphabet.charAt((line-1)*5+column-1));
       }
     }
-  }
-
-  this.searchFor = function(search) {
-    this.search.sendKeys(search);
   }
 
 };
