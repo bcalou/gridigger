@@ -111,6 +111,8 @@ angular.module('gridigger.directives', [])
       template: '<input class="string-search search" maxlength="15"/>',
       link: function(scope, element) {
 
+        var maxRank = 0;
+
         // Get 8 inputs around given input
         scope.getAdjacentInputs = function(input) {
           var value = input.val().toUpperCase();
@@ -132,13 +134,19 @@ angular.module('gridigger.directives', [])
           return $('#grid tr:nth-child(' + parseInt(line + 1) + ') td:nth-child(' + parseInt(column + 1) + ') input');
         }
 
+        scope.$watch("redundancy", function() {
+          $(element).trigger('input');
+        });
+
         // When searching something
         $(element).on('input', function() {
           var input = $(element).val().toUpperCase();
           var inputLength = input.length;
           var resultsGroups = new Array();
-          var maxRank = 0;
-          $('#grid input').attr('class', '');
+          for(i = maxRank; i >= 0; i--) {
+            $('#grid input.rank-' + i).removeClass('string-result rank-' + i);
+          }
+          maxRank = 0;
           if(inputLength > 0) { // First letter
             var group = 0;
             $('#grid input').each(function() {
@@ -166,16 +174,16 @@ angular.module('gridigger.directives', [])
               });
             }
           }
-          // At the end, set active class to correct chains
+          // At the end, set result class to correct chains
           $('#grid input.rank-' + maxRank).each(function() {
-            $(this).addClass('active');
+            $(this).addClass('string-result');
           });
           for(var i = maxRank; i >= 0; i--) {
-            $('#grid input.active.rank-' + i).each(function() {
+            $('#grid input.string-result.rank-' + i).each(function() {
               var adjacentInputs = scope.getAdjacentInputs($(this));
               for(var j = 0; j < adjacentInputs.length; j++) {
                 if(adjacentInputs[j].hasClass('rank-' + parseInt(i-1))) {
-                  adjacentInputs[j].addClass('active');
+                  adjacentInputs[j].addClass('string-result');
                 }
               }
             });
@@ -197,7 +205,7 @@ angular.module('gridigger.directives', [])
         scope.highlightResults = function(input, selection) {
           if(scope.selectionContainsValues(input, selection)) {
             for(var i = 0; i < selection.length; i++) {
-              $(selection[i]).addClass('active');
+              $(selection[i]).addClass('inline-result');
             }
           }
         }
@@ -229,9 +237,13 @@ angular.module('gridigger.directives', [])
           return $('#grid tr:nth-child(' + line + ') td:nth-child(' + column + ') input');
         }
 
+        scope.$watch("redundancy", function() {
+          $(element).trigger('input');
+        });
+
         // When searching something
         $(element).on('input', function() {
-          $('#grid input').attr('class', '');
+          $('#grid input.inline-result').removeClass('inline-result');
           var input = $(element).val().toUpperCase();
           if(input.length > 0) {
             // Search lines

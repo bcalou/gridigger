@@ -10,8 +10,13 @@
       font-size: 1.8em;
       text-align: center;
       text-transform: uppercase;
-      &[class*='active'] {
-        background-color: yellow;
+      &.string-result {
+        color: blue;
+        font-weight: bold;
+        border: 1px solid blue;
+      }
+      &.inline-result {
+        background: yellow;
       }
     }
 }

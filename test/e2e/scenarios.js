@@ -153,29 +153,26 @@ describe('gridigger', function() {
     mainPage.inlineSearchInput.sendKeys('A');
 
     // This search should return 13 results
-    expect(element.all(by.css('.active')).count()).toBe(13);
+    expect(element.all(by.css('.inline-result')).count()).toBe(13);
 
     // More complex search
     mainPage.inlineSearchInput.sendKeys('AGNA');
 
     // This search should return 5 results
-    expect(element.all(by.css('.active')).count()).toBe(5);
+    expect(element.all(by.css('.inline-result')).count()).toBe(5);
 
-    // Empty search and remove redundancy authorization
+    // Remove redundancy authorization
     mainPage.redundancyCheckbox.click();
-    mainPage.inlineSearchInput.clear();
 
-    // Redo simple search
+    // There should now be no result
+    expect(element.all(by.css('.inline-result')).count()).toBe(0);
+
+    // Redo more simple search
+    mainPage.inlineSearchInput.clear();
     mainPage.inlineSearchInput.sendKeys('A');
 
-    // The result should be the same
-    expect(element.all(by.css('.active')).count()).toBe(13);
-
-    // Redo more compexe search
-    mainPage.inlineSearchInput.sendKeys('AGNA');
-
-    // There should be no result
-    expect(element.all(by.css('.active')).count()).toBe(0);
+    // The result should be the same than on the first search
+    expect(element.all(by.css('.inline-result')).count()).toBe(13);
 
     // Reset state
     mainPage.inlineSearchInput.clear();
