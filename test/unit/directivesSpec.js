@@ -45,4 +45,12 @@ describe('directives', function() {
       });
     });
 
+    describe('gridSearchField', function() {
+      it('should generate a grid search field', function() {
+        var element = $compile("<grid-search>")($rootScope);
+        $rootScope.$digest();
+        expect(element[0].value).toEqual('');
+      });
+    });
+
 });

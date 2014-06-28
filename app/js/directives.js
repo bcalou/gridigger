@@ -14,10 +14,10 @@ angular.module('gridigger.directives', [])
 
         // Focus on next input on keypress
         $(element).keypress(function() {
-          if($(element).parent().next().find('input').length) {
-            $(element).parent().next().find('input').focus();
+          if($(this).parent().next().find('input').length) {
+            $(this).parent().next().find('input').focus();
           } else {
-            $(element).parent().parent().next().find('input').eq(0).focus();
+            $(this).parent().parent().next().find('input').eq(0).focus();
           }
         });
       }
@@ -78,7 +78,7 @@ angular.module('gridigger.directives', [])
         });
 
         // Load at start
-        if(localStorage.gridData.length > 0) {
+        if(localStorage.gridData && localStorage.gridData.length > 0) {
           setTimeout(function() {
             scope.loadData();
           }, 100);
@@ -97,10 +97,91 @@ angular.module('gridigger.directives', [])
 
         // Empty all inputs on click
         $(element).click(function() {
-          $('#grid input').val("");
+          $('#grid input').val('');
         });
       }
     }
   })
 
+  .directive('gridSearch', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      transclude: false,
+      template: '<input class="grid-search" maxlength="15"/>',
+      link: function(scope, element) {
+
+        // Get 8 inputs around given input
+        scope.getAdjacentInputs = function(input) {
+          var value = input.val().toUpperCase();
+          var column = parseInt(input.parent().index());
+          var line = parseInt(input.parent().parent().index());
+          return new Array(
+            scope.getInput(column, line - 1),
+            scope.getInput(column + 1, line - 1),
+            scope.getInput(column + 1, line),
+            scope.getInput(column + 1, line + 1),
+            scope.getInput(column, line + 1),
+            scope.getInput(column - 1, line + 1),
+            scope.getInput(column - 1, line),
+            scope.getInput(column - 1, line - 1)
+          );
+        }
+
+        scope.getInput = function(column, line) {
+          return $('#grid tr:nth-child(' + parseInt(line + 1) + ') td:nth-child(' + parseInt(column + 1) + ') input');
+        }
+
+        // When searching something
+        $(element).on('input', function() {
+          var input = $(element).val().toUpperCase();
+          var inputLength = input.length;
+          var resultsGroups = new Array();
+          var maxRank = 0;
+          $('#grid input').attr('class', '');
+          if(inputLength > 0) { // First letter
+            var group = 0;
+            $('#grid input').each(function() {
+              if($(this).val().toUpperCase() == input[0]) {
+                $(this).addClass('rank-0');
+              }
+            });
+          }
+          if(inputLength > 1) { // Other letters
+            for (var i = 1; i < inputLength; i++) {
+              $('#grid input.rank-' + parseInt(i-1)).each(function () {
+                var foundSomething = false;
+                var adjacentInputs = scope.getAdjacentInputs($(this));
+                for (var j = 0; j < adjacentInputs.length; j++) {
+                  if($(adjacentInputs[j]).val()
+                    && $(adjacentInputs[j]).val().toUpperCase() == input[i]) {
+                    $(adjacentInputs[j]).addClass('rank-' + i);
+                    foundSomething = true;
+                    maxRank = i;
+                  }
+                }
+                if(!foundSomething) {
+                  $(this).removeClass('rank-' + parseInt(i-1));
+                }
+              });
+            }
+          }
+          // At the end, set active class to correct chains
+          $('#grid input.rank-' + maxRank).each(function() {
+            $(this).addClass('active');
+          });
+          for(var i = maxRank; i >= 0; i--) {
+            $('#grid input.active.rank-' + i).each(function() {
+              var adjacentInputs = scope.getAdjacentInputs($(this));
+              for(var j = 0; j < adjacentInputs.length; j++) {
+                if(adjacentInputs[j].hasClass('rank-' + parseInt(i-1))) {
+                  adjacentInputs[j].addClass('active');
+                }
+              }
+            });
+          }
+        });
+      }
+    }
+  })
 ;

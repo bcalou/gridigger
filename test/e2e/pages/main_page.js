@@ -19,6 +19,8 @@ var mainPage = function() {
   this.loadGridButton = element(by.css("#load-grid"));
   this.emptyGridButton = element(by.css("#empty-grid"));
 
+  this.search = element(by.css('.grid-search'));
+
   this.getCell = function(line, column) {
     return element(by.css('#grid tr:nth-child(' + line + ') td:nth-child(' + column + ') input'));
   }
@@ -45,6 +47,21 @@ var mainPage = function() {
   this.resetGrid = function() {
     this.resetDimensions();
     this.emptyGridButton.click();
+  }
+
+  this.loadAlphabetGrid = function() {
+    this.setLinesNumber(5);
+    this.setColumnsNumber(5);
+    var alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ";
+    for(line = 1; line <= 5; line++) {
+      for(column = 1; column <= 5; column++) {
+        this.getCell(line, column).sendKeys(alphabet.charAt((line-1)*5+column-1));
+      }
+    }
+  }
+
+  this.searchFor = function(search) {
+    this.search.sendKeys(search);
   }
 
 };

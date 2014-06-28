@@ -8,10 +8,14 @@ describe('gridigger', function() {
 
   browser.get('index.html');
 
-  it('should show a specific number of cells at the beginning', function() {
+  afterEach(function() {
 
-    // Setup
+    // Reset grid
     mainPage.resetGrid();
+
+  });
+
+  it('should show a specific number of cells at the beginning', function() {
 
     // Verify there are 100 cells
     expect(mainPage.cells.count()).toBe(100);
@@ -20,9 +24,6 @@ describe('gridigger', function() {
 
   it('should change the number of cells when changing linesNb and columnsNb', function() {
 
-    // Setup
-    mainPage.resetGrid();
-
     // Set linesNb and columnsNb
     mainPage.setLinesNumber('4');
     mainPage.setColumnsNumber('5');
@@ -30,15 +31,9 @@ describe('gridigger', function() {
     // There now should be 20 cells
     expect(mainPage.cells.count()).toBe(20);
 
-    // Reset state
-    mainPage.resetGrid();
-
   });
 
   it('should focus on next input when typing into an input', function() {
-
-    // Setup
-    mainPage.resetGrid();
 
     // Type into the first input (first line, penultimate column)
     mainPage.getCell(1, 9).sendKeys('A');
@@ -52,15 +47,9 @@ describe('gridigger', function() {
     browser.actions().sendKeys('C').perform();
     expect(mainPage.getCellValue(2, 1)).toBe('C');
 
-    // Reset state
-    mainPage.resetGrid();
-
   });
 
   it('should save the grid dimensions and data and load them on next visit', function() {
-
-    // Setup
-    mainPage.resetGrid();
 
     // Set linesNb and columnsNb
     mainPage.setLinesNumber('4');
@@ -89,15 +78,9 @@ describe('gridigger', function() {
     expect(mainPage.getCellValue(2, 3)).toBe('B');
     expect(mainPage.getCellValue(4, 2)).toBe('C');
 
-    // Reset state
-    mainPage.resetGrid();
-
   });
 
   it('should automatically load the local storage data when arriving on the page', function() {
-
-    // Setup
-    mainPage.resetGrid();
 
     // Set linesNb and columnsNb
     mainPage.setLinesNumber('5');
@@ -121,15 +104,9 @@ describe('gridigger', function() {
     expect(mainPage.getCellValue(1, 3)).toBe('B');
     expect(mainPage.getCellValue(2, 3)).toBe('C');
 
-    // Reset state
-    mainPage.resetGrid();
-
   })
 
   it('should empty the grid when clicking on empty grid button', function() {
-
-    // Setup
-    mainPage.resetGrid();
 
     // Setting some data
     mainPage.getCell(1, 1).sendKeys('A');
@@ -143,5 +120,23 @@ describe('gridigger', function() {
     expect(mainPage.getCellValue(2, 2)).toBe('');
 
   });
+
+  it('should find and highligth a string with redundance', function() {
+
+    // Setup
+    mainPage.loadAlphabetGrid();
+
+    // Search string
+    mainPage.searchFor('AGHNRNO');
+
+    // Verify the string was found
+    expect(element(by.css('.rank-0')).getAttribute('value')).toBe('A');
+    expect(element(by.css('.rank-1')).getAttribute('value')).toBe('G');
+    expect(element(by.css('.rank-2')).getAttribute('value')).toBe('H');
+    expect(element(by.css('.rank-3')).getAttribute('value')).toBe('N');
+    expect(element(by.css('.rank-4')).getAttribute('value')).toBe('R');
+    expect(element(by.css('.rank-5')).getAttribute('value')).toBe('N');
+    expect(element(by.css('.rank-6')).getAttribute('value')).toBe('O');
+  })
 
 });
