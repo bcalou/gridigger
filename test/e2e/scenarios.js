@@ -138,24 +138,47 @@ describe('gridigger', function() {
     expect(element(by.css('.rank-5')).getAttribute('value')).toBe('N');
     expect(element(by.css('.rank-6')).getAttribute('value')).toBe('O');
 
+    // Reset state
+    mainPage.stringSearchInput.clear();
+
   })
 
-  it('should find and highligth a line, column or diagonal containing specific values with redundance', function() {
+  it('should find and highligth a line, column or diagonal containing specific values with redundancy or not', function() {
 
     // Setup
     mainPage.loadAlphabetGrid();
 
-    // Search lines, columns and diagonals
+    // Authorize redundancy and search lines, columns and diagonals
+    mainPage.redundancyCheckbox.click();
     mainPage.inlineSearchInput.sendKeys('A');
 
     // This search should return 13 results
     expect(element.all(by.css('.active')).count()).toBe(13);
 
     // More complex search
-    mainPage.inlineSearchInput.sendKeys('AGN');
+    mainPage.inlineSearchInput.sendKeys('AGNA');
 
     // This search should return 5 results
     expect(element.all(by.css('.active')).count()).toBe(5);
+
+    // Empty search and remove redundancy authorization
+    mainPage.redundancyCheckbox.click();
+    mainPage.inlineSearchInput.clear();
+
+    // Redo simple search
+    mainPage.inlineSearchInput.sendKeys('A');
+
+    // The result should be the same
+    expect(element.all(by.css('.active')).count()).toBe(13);
+
+    // Redo more compexe search
+    mainPage.inlineSearchInput.sendKeys('AGNA');
+
+    // There should be no result
+    expect(element.all(by.css('.active')).count()).toBe(0);
+
+    // Reset state
+    mainPage.inlineSearchInput.clear();
 
   })
 

@@ -192,6 +192,15 @@ angular.module('gridigger.directives', [])
       transclude: true,
       template: '<input class="inline-search search" maxlength="15"/>',
       link: function(scope, element) {
+        var resultGroup = 0;
+
+        scope.highlightResults = function(input, selection) {
+          if(scope.selectionContainsValues(input, selection)) {
+            for(var i = 0; i < selection.length; i++) {
+              $(selection[i]).addClass('active');
+            }
+          }
+        }
 
         scope.selectionContainsValues = function(search, selection) {
           var valid = true;
@@ -200,29 +209,24 @@ angular.module('gridigger.directives', [])
               valid = false;
             }
           }
+          $('#grid input.used').removeClass('used');
           return valid;
         }
 
         scope.valueIsInSelection = function(value, selection) {
-          var found = false;
           for(var i = 0; i < selection.length; i++) {
-            if($(selection[i]).val().toUpperCase() == value) {
-              var found = true;
+            if($(selection[i]).val().toUpperCase() == value
+               && (!$(selection[i]).hasClass('used') || scope.redundancy)
+              ) {
+              $(selection[i]).addClass('used');
+              return true;
             }
           }
-          return found;
+          return false;
         }
 
         scope.getCell = function(line, column) {
           return $('#grid tr:nth-child(' + line + ') td:nth-child(' + column + ') input');
-        }
-
-        scope.highlightResults = function(input, selection) {
-          if(scope.selectionContainsValues(input, selection)) {
-            for(var i = 0; i < selection.length; i++) {
-              $(selection[i]).addClass('active');
-            }
-          }
         }
 
         // When searching something

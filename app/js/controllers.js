@@ -8,6 +8,7 @@ angular.module('gridigger.controllers', [])
 
     $scope.linesNb = 10;
     $scope.columnsNb = 10;
+    $scope.redundancy = false;
 
     $scope.getList = function(length) {
       var result = [];
