@@ -199,13 +199,13 @@ angular.module('gridigger.directives', [])
       replace: true,
       transclude: true,
       template: '<input class="inline-search search" maxlength="15"/>',
-      link: function(scope, element) {
-        var resultGroup = 0;
+      link: function(scope, element, attr) {
+        var inlineGroup = attr['inlineGroup'];
 
         scope.highlightResults = function(input, selection) {
           if(scope.selectionContainsValues(input, selection)) {
             for(var i = 0; i < selection.length; i++) {
-              $(selection[i]).addClass('inline-result');
+              $(selection[i]).addClass('inline-group-' + inlineGroup);
             }
           }
         }
@@ -217,6 +217,7 @@ angular.module('gridigger.directives', [])
               valid = false;
             }
           }
+
           $('#grid input.used').removeClass('used');
           return valid;
         }
@@ -243,7 +244,7 @@ angular.module('gridigger.directives', [])
 
         // When searching something
         $(element).on('input', function() {
-          $('#grid input.inline-result').removeClass('inline-result');
+          $('#grid input.inline-group-' + inlineGroup).removeClass('inline-group-' + inlineGroup);
           var input = $(element).val().toUpperCase();
           if(input.length > 0) {
             // Search lines

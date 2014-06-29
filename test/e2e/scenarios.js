@@ -150,32 +150,40 @@ describe('gridigger', function() {
 
     // Authorize redundancy and search lines, columns and diagonals
     mainPage.redundancyCheckbox.click();
-    mainPage.inlineSearchInput.sendKeys('A');
+    mainPage.inlineSearchInputs.get(0).sendKeys('A');
 
     // This search should return 13 results
-    expect(element.all(by.css('.inline-result')).count()).toBe(13);
+    expect(element.all(by.css('.inline-group-0')).count()).toBe(13);
 
     // More complex search
-    mainPage.inlineSearchInput.sendKeys('AGNA');
+    mainPage.inlineSearchInputs.get(0).sendKeys('AGNA');
 
     // This search should return 5 results
-    expect(element.all(by.css('.inline-result')).count()).toBe(5);
+    expect(element.all(by.css('.inline-group-0')).count()).toBe(5);
 
     // Remove redundancy authorization
     mainPage.redundancyCheckbox.click();
 
     // There should now be no result
-    expect(element.all(by.css('.inline-result')).count()).toBe(0);
+    expect(element.all(by.css('.inline-group-0')).count()).toBe(0);
 
     // Redo more simple search
-    mainPage.inlineSearchInput.clear();
-    mainPage.inlineSearchInput.sendKeys('A');
+    mainPage.inlineSearchInputs.get(0).clear();
+    mainPage.inlineSearchInputs.get(0).sendKeys('A');
 
     // The result should be the same than on the first search
-    expect(element.all(by.css('.inline-result')).count()).toBe(13);
+    expect(element.all(by.css('.inline-group-0')).count()).toBe(13);
+
+    // Add an inline search field
+    mainPage.addInlineSearchButton.click();
+    mainPage.inlineSearchInputs.get(1).sendKeys('CH')
+
+    // Both results should now co-exist
+    expect(element.all(by.css('.inline-group-0')).count()).toBe(13);
+    expect(element.all(by.css('.inline-group-1')).count()).toBe(5);
 
     // Reset state
-    mainPage.inlineSearchInput.clear();
+    mainPage.inlineSearchInputs.get(0).clear();
 
   })
 

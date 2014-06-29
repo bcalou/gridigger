@@ -18,5 +18,11 @@
 </div>
 
 <p>Authorize redundancy in searches : <input class="redundancy" type="checkbox" ng-model="redundancy"></p>
-<p>Search for line, column or diagonal containing : <inline-search></inline-search>
+<p>
+    Search for line, column or diagonal containing :
+    <div ng-repeat="inlineSearch in getList(inlineSearchesNumber)">
+        <inline-search inline-group="{{$index}}"></inline-search>
+    </div>
+    <button id='add-inline-search' ng-click="inlineSearchesNumber = inlineSearchesNumber + 1">Ajouter une sélection</button>
+</p>
 <p>Search for a series of caracters : <string-search></string-search></p>

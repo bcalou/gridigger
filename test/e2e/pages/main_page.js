@@ -21,7 +21,8 @@ var mainPage = function() {
 
   this.redundancyCheckbox = element(by.css('.redundancy'));
   this.stringSearchInput = element(by.css('.string-search'));
-  this.inlineSearchInput = element(by.css('.inline-search'));
+  this.inlineSearchInputs = element.all(by.css('.inline-search'));
+  this.addInlineSearchButton = element(by.css('#add-inline-search'));
 
   this.getCell = function(line, column) {
     return element(by.css('#grid tr:nth-child(' + line + ') td:nth-child(' + column + ') input'));
