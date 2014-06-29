@@ -10,18 +10,30 @@
       font-size: 1.8em;
       text-align: center;
       text-transform: uppercase;
-      &.string-result {
-        color: blue;
-        font-weight: bold;
-        border: 1px solid blue;
+      &[class*='string-group-'] {
+        background: chartreuse;
+        &[class*='inline-group-'] {
+          background: DeepSkyBlue ;
+        }
       }
       &[class*='inline-group-'] {
         background: yellow;
+        &[class*='string-group-'] {
+          background: DeepSkyBlue;
+        }
       }
     }
 }
 
+/*
+ * SEARCH
+ */
+
 .search {
   margin-bottom: 2px;
   text-transform: uppercase;
+}
+
+#string-search {
+  margin-bottom: 20px;
 }

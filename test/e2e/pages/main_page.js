@@ -20,7 +20,8 @@ var mainPage = function() {
   this.emptyGridButton = element(by.css("#empty-grid"));
 
   this.redundancyCheckbox = element(by.css('.redundancy'));
-  this.stringSearchInput = element(by.css('.string-search'));
+  this.stringSearchInputs = element.all(by.css('.string-search'));
+  this.addStringSearchButton = element(by.css('#add-string-search'));
   this.inlineSearchInputs = element.all(by.css('.inline-search'));
   this.addInlineSearchButton = element(by.css('#add-inline-search'));
 

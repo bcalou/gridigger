@@ -109,8 +109,8 @@ angular.module('gridigger.directives', [])
       replace: true,
       transclude: false,
       template: '<input class="string-search search" maxlength="15"/>',
-      link: function(scope, element) {
-
+      link: function(scope, element, attr) {
+        var stringGroupClass = 'string-group-' + attr['stringGroup'];
         var maxRank = 0;
 
         // Get 8 inputs around given input
@@ -144,8 +144,9 @@ angular.module('gridigger.directives', [])
           var inputLength = input.length;
           var resultsGroups = new Array();
           for(i = maxRank; i >= 0; i--) {
-            $('#grid input.rank-' + i).removeClass('string-result rank-' + i);
+            $('#grid input.rank-' + i).removeClass('rank-' + i);
           }
+          $('#grid input.' + stringGroupClass).removeClass(stringGroupClass);
           maxRank = 0;
           if(inputLength > 0) { // First letter
             var group = 0;
@@ -176,14 +177,14 @@ angular.module('gridigger.directives', [])
           }
           // At the end, set result class to correct chains
           $('#grid input.rank-' + maxRank).each(function() {
-            $(this).addClass('string-result');
+            $(this).addClass(stringGroupClass);
           });
           for(var i = maxRank; i >= 0; i--) {
-            $('#grid input.string-result.rank-' + i).each(function() {
+            $('#grid input.' + stringGroupClass + '.rank-' + i).each(function() {
               var adjacentInputs = scope.getAdjacentInputs($(this));
               for(var j = 0; j < adjacentInputs.length; j++) {
                 if(adjacentInputs[j].hasClass('rank-' + parseInt(i-1))) {
-                  adjacentInputs[j].addClass('string-result');
+                  adjacentInputs[j].addClass(stringGroupClass);
                 }
               }
             });
@@ -200,12 +201,12 @@ angular.module('gridigger.directives', [])
       transclude: true,
       template: '<input class="inline-search search" maxlength="15"/>',
       link: function(scope, element, attr) {
-        var inlineGroup = attr['inlineGroup'];
+        var inlineGroupClass = 'inline-group-' + attr['inlineGroup'];
 
         scope.highlightResults = function(input, selection) {
           if(scope.selectionContainsValues(input, selection)) {
             for(var i = 0; i < selection.length; i++) {
-              $(selection[i]).addClass('inline-group-' + inlineGroup);
+              $(selection[i]).addClass(inlineGroupClass);
             }
           }
         }
@@ -244,7 +245,7 @@ angular.module('gridigger.directives', [])
 
         // When searching something
         $(element).on('input', function() {
-          $('#grid input.inline-group-' + inlineGroup).removeClass('inline-group-' + inlineGroup);
+          $('#grid input.' + inlineGroupClass).removeClass(inlineGroupClass);
           var input = $(element).val().toUpperCase();
           if(input.length > 0) {
             // Search lines

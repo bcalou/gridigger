@@ -127,19 +127,34 @@ describe('gridigger', function() {
     mainPage.loadAlphabetGrid();
 
     // Search string
-    mainPage.stringSearchInput.sendKeys('AGHNRNO');
+    mainPage.stringSearchInputs.get(0).sendKeys('AGHNRNO');
 
-    // Verify the string was found
-    expect(element(by.css('.rank-0')).getAttribute('value')).toBe('A');
-    expect(element(by.css('.rank-1')).getAttribute('value')).toBe('G');
-    expect(element(by.css('.rank-2')).getAttribute('value')).toBe('H');
-    expect(element(by.css('.rank-3')).getAttribute('value')).toBe('N');
-    expect(element(by.css('.rank-4')).getAttribute('value')).toBe('R');
-    expect(element(by.css('.rank-5')).getAttribute('value')).toBe('N');
-    expect(element(by.css('.rank-6')).getAttribute('value')).toBe('O');
+    // Verify first string was found
+    expect(element(by.css('.string-group-0.rank-0')).getAttribute('value')).toBe('A');
+    expect(element(by.css('.string-group-0.rank-1')).getAttribute('value')).toBe('G');
+    expect(element(by.css('.string-group-0.rank-2')).getAttribute('value')).toBe('H');
+    expect(element(by.css('.string-group-0.rank-3')).getAttribute('value')).toBe('N');
+    expect(element(by.css('.string-group-0.rank-4')).getAttribute('value')).toBe('R');
+    expect(element(by.css('.string-group-0.rank-5')).getAttribute('value')).toBe('N');
+    expect(element(by.css('.string-group-0.rank-6')).getAttribute('value')).toBe('O');
+
+    // Add another search
+    mainPage.addStringSearchButton.click();
+    mainPage.stringSearchInputs.get(1).sendKeys('ZUOSR');
+
+    // Verify second string was found
+    expect(element(by.css('.string-group-1.rank-0')).getAttribute('value')).toBe('Z');
+    expect(element(by.css('.string-group-1.rank-1')).getAttribute('value')).toBe('U');
+    expect(element(by.css('.string-group-1.rank-2')).getAttribute('value')).toBe('O');
+    expect(element(by.css('.string-group-1.rank-3')).getAttribute('value')).toBe('S');
+    expect(element(by.css('.string-group-1.rank-4')).getAttribute('value')).toBe('R');
+
+    // First results should still be there
+    expect(element.all(by.css('.string-group-0')).count()).toBe(6); // 6 and not 7 because one letter is used twice
 
     // Reset state
-    mainPage.stringSearchInput.clear();
+    mainPage.stringSearchInputs.get(0).clear();
+    mainPage.stringSearchInputs.get(1).clear();
 
   })
 
@@ -184,6 +199,7 @@ describe('gridigger', function() {
 
     // Reset state
     mainPage.inlineSearchInputs.get(0).clear();
+    mainPage.inlineSearchInputs.get(1).clear();
 
   })
 

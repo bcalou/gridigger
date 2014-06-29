@@ -9,6 +9,7 @@ angular.module('gridigger.controllers', [])
     $scope.linesNb = 10;
     $scope.columnsNb = 10;
     $scope.redundancy = false;
+    $scope.stringSearchesNumber = 1;
     $scope.inlineSearchesNumber = 1;
 
     $scope.getList = function(length) {
