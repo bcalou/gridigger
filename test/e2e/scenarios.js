@@ -6,12 +6,9 @@ describe('gridigger', function() {
 
   var mainPage = require('./pages/main_page.js');
 
-  browser.get('index.html');
+  beforeEach(function() {
 
-  afterEach(function() {
-
-    // Reset grid
-    mainPage.resetGrid();
+    browser.get('index.html');
 
   });
 
@@ -152,10 +149,6 @@ describe('gridigger', function() {
     // First results should still be there
     expect(element.all(by.css('.string-group-0')).count()).toBe(6); // 6 and not 7 because one letter is used twice
 
-    // Reset state
-    mainPage.stringSearchInputs.get(0).clear();
-    mainPage.stringSearchInputs.get(1).clear();
-
   })
 
   it('should find and highligth a line, column or diagonal containing specific values with redundancy or not', function() {
@@ -197,10 +190,28 @@ describe('gridigger', function() {
     expect(element.all(by.css('.inline-group-0')).count()).toBe(13);
     expect(element.all(by.css('.inline-group-1')).count()).toBe(5);
 
-    // Reset state
-    mainPage.inlineSearchInputs.get(0).clear();
-    mainPage.inlineSearchInputs.get(1).clear();
-
   })
+
+  it('should create a new string/inline search input and focus on it when typing enter', function() {
+
+    // Press enter
+    mainPage.inlineSearchInputs.get(0).sendKeys(protractor.Key.ENTER);
+
+    // Should have created another field
+    expect(mainPage.inlineSearchInputs.count()).toBe(2);
+
+    // The new field should have the focus
+    browser.actions().sendKeys('A').perform();
+    expect(mainPage.inlineSearchInputs.get(1).getAttribute('value')).toBe('A');
+
+    // When going on first field and typing enter again, there should not be a new field
+    mainPage.inlineSearchInputs.get(0).sendKeys(protractor.Key.ENTER);
+    expect(mainPage.inlineSearchInputs.count()).toBe(2);
+
+    // The next field should have the focus
+    browser.actions().sendKeys('B').perform();
+    expect(mainPage.inlineSearchInputs.get(1).getAttribute('value')).toBe('AB');
+
+  });
 
 });

@@ -138,6 +138,17 @@ angular.module('gridigger.directives', [])
           $(element).trigger('input');
         });
 
+        // Add field when pressing enter
+        $(element).keyup(function (e) {
+            if (e.keyCode == 13) {
+              var index = $(element).parent().index();
+              if(index == $('.string-search').length - 1) {
+                $('#add-string-search').trigger('click');
+              }
+              $('.string-search').eq(index + 1).focus();
+            }
+        });
+
         // When searching something
         $(element).on('input', function() {
           var input = $(element).val().toUpperCase();
@@ -241,6 +252,17 @@ angular.module('gridigger.directives', [])
 
         scope.$watch("redundancy", function() {
           $(element).trigger('input');
+        });
+
+        // Add field when pressing enter
+        $(element).keyup(function (e) {
+            if (e.keyCode == 13) {
+              var index = $(element).parent().index();
+              if(index == $('.inline-search').length - 1) {
+                $('#add-inline-search').trigger('click');
+              }
+              $('.inline-search').eq(index + 1).focus();
+            }
         });
 
         // When searching something
